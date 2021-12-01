@@ -1,6 +1,6 @@
 # XState-fsmPlus-Espruino
 
-This repro contains a copy of the finite state machine, [XState/fsm](https://XState.js.org/docs/packages/XState-fsm) with modifications necessary to run it as a module within the Espruino JavaScript Interpreter for Microcontrollers.  In addition the copy contains added functionality in support of a subset of the Statechart functionality found in the full XState/core package.
+This repro contains a copy of the finite state machine, [XState/fsm](https://github.com/statelyai/xstate/tree/main/packages/xstate-fsm) with modifications necessary to run it as a module within the Espruino JavaScript Interpreter for Microcontrollers.  In addition the copy contains added functionality in support of a subset of the Statechart functionality found in the full XState/core package.
 
 ## (This repro is currently Work in Progress)
 
@@ -24,9 +24,9 @@ The goal of XState-fsmPlus-Espruino is to enable the advantages of a finite stat
 
 
 ## Features
-XState-fsmPlus-Espruino contains all of the features of [@XState/fsm](https://XState.js.org/docs/packages/XState-fsm/#features) with a small set of additional features available within Statechart standards.  Below is an amended copy of the features table from [@XState/fsm](https://XState.js.org/docs/packages/XState-fsm/#features)
+XState-fsmPlus-Espruino contains all of the features of [@XState/fsm](https://github.com/statelyai/xstate/tree/main/packages/xstate-fsm) with a small set of additional features available within Statechart standards.  Below is an amended copy of the features table from [@XState/fsm](https://github.com/statelyai/xstate/tree/main/packages/xstate-fsm)
 
-|                             | [@XState/fsm](https://XState.js.org/docs/packages/XState-fsm/#features)| **XState-fsmPlus-Espruino**  |[XState](https://github.com/statelyai/XState)   |
+|                             | [@XState/fsm](https://github.com/statelyai/xstate/tree/main/packages/xstate-fsm)| **XState-fsmPlus-Espruino**  |[XState](https://github.com/statelyai/XState)   |
 | --------------------------- | :-------------: | :----------------:  |:---------------------------------------------: |
 | Finite states               |       ✅        |        ✅           |                   ✅                          |
 | Initial state               |       ✅        |        ✅           |                   ✅                          |
