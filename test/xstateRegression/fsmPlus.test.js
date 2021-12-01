@@ -1,5 +1,5 @@
 
-const { createMachine, assign, interpret } = require ('../src/xstate-fsmPlus');
+const { createMachine, assign, interpret } = require ('../../src/xstate-fsmPlus.js');
 describe('@xstate/fsm', () => {
     const lightConfig = {
         id: 'light',
