@@ -1,6 +1,6 @@
 # XState-fsmPlus-Espruino
 
-This repro contains a copy of the finite state machine, [XState/fsm](https://XState.js.org/docs/packages/XState-fsm/) with modifications necessary to run it as a module within the Espruino JavaScript Interpreter for Microcontrollers.  In addition the copy contains added functionality in support of a subset of the Statechart functionality found in the full XState/core package.
+This repro contains a copy of the finite state machine, [XState/fsm](https://XState.js.org/docs/packages/XState-fsm) with modifications necessary to run it as a module within the Espruino JavaScript Interpreter for Microcontrollers.  In addition the copy contains added functionality in support of a subset of the Statechart functionality found in the full XState/core package.
 
 ## (This repro is currently Work in Progress)
 
