@@ -4,7 +4,7 @@ This repro contains a copy of the finite state machine, [XState/fsm](https://git
 
 ## (This repro is currently Work in Progress)
 
-The current status is that a working version has been deployed and is available as per the implementation notes below.
+The current status is 'not operational' -  the required source fies are being updated in line with the issues raised in this repro ~~that a working version has been deployed and is available as per the implementation notes below~~.
 Testing is continuing and examples are being created and published here within the examples folder.   Watch this space :)
 
 **This software should be considered as experimental.**  
@@ -89,6 +89,7 @@ The module can then be accessed with require statements as below.
 * Espruino:  <https://www.espruino.com/>  and <https://github.com/espruino>
 * Esprunio Working with Modules: <https://www.espruino.com/Modules>
 * Esprunio Index of modules (Devices etc) <http://www.espruino.com/modules/>
+* The XState Visualizer - a tool for creating and inspecting statecharts to visualize the state of your applications. <https://stately.ai/viz>
 
 ## Credits
 
@@ -104,6 +105,6 @@ To support the XState project please see: <https://opencollective.com/XState>
 XState/core is Copyright (c) 2015 David Khourshid and utilised here under its MIT license <https://github.com/statelyai/XState/blob/main/packages/core/LICENSE>
 
 XState/fsm is Copyright (c) 2015 David Khourshid and utilised here under its MIT license
-<https://github.com/SimonGAndrews/xstate-fsmPlus-Espruino/blob/main/LICENSE>
+<https://github.com/statelyai/xstate/blob/main/packages/xstate-fsm/LICENSE>
 
-The modifications to XState/core and XState/fsm provided here are Copyright (c) 2021 Simon Andrews and are provided for use under MIT License. <https://github.com/SimonGAndrews/XState-fsm-Espruino/blob/main/LICENSE>
+The modifications to XState/core and XState/fsm provided here are Copyright (c) 2021 Simon Andrews and are provided for use under MIT License. <https://github.com/SimonGAndrews/xstate-fsmPlus-Espruino/blob/main/LICENSE>
