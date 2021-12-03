@@ -24,7 +24,7 @@ The goal of XState-fsmPlus-Espruino is to enable the advantages of a finite stat
 
 
 ## Features
-XState-fsmPlus-Espruino contains all of the features of [@XState/fsm](https://github.com/statelyai/xstate/tree/main/packages/xstate-fsm) with a small set of additional features available within Statechart standards.  Below is an amended copy of the features table from [@XState/fsm](https://github.com/statelyai/xstate/tree/main/packages/xstate-fsm)
+XState-fsmPlus-Espruino contains all of the features of @XState/fsm with a small set of additional features available within Statechart standards.  Below is an amended copy of the features table from [@XState/fsm](https://github.com/statelyai/xstate/tree/main/packages/xstate-fsm)
 
 |                             | [@XState/fsm](https://github.com/statelyai/xstate/tree/main/packages/xstate-fsm)| **XState-fsmPlus-Espruino**  |[XState](https://github.com/statelyai/XState)   |
 | --------------------------- | :-------------: | :----------------:  |:---------------------------------------------: |
@@ -83,8 +83,8 @@ The module can then be accessed with require statements as below.
 ## References
 * Statecharts an introduction: <https://statecharts.dev/>
 * Documentation for XState: <https://XState.js.org/docs/>  (including FSM concepts)
-* Documentation for XState/fsm: <https://XState.js.org/docs/packages/XState-fsm/#features>
-  and <https://github.com/statelyai/XState/tree/main/packages/XState-fsm>
+* Documentation for XState/fsm: <https://xstate.js.org/docs/packages/xstate-fsm/>
+  and <https://github.com/statelyai/xstate/tree/main/packages/xstate-fsm>
 
 * Espruino:  <https://www.espruino.com/>  and <https://github.com/espruino>
 * Esprunio Working with Modules: <https://www.espruino.com/Modules>
@@ -104,6 +104,6 @@ To support the XState project please see: <https://opencollective.com/XState>
 XState/core is Copyright (c) 2015 David Khourshid and utilised here under its MIT license <https://github.com/statelyai/XState/blob/main/packages/core/LICENSE>
 
 XState/fsm is Copyright (c) 2015 David Khourshid and utilised here under its MIT license
-<https://github.com/statelyai/XState/blob/main/packages/XState-fsm/LICENSE>
+<https://github.com/SimonGAndrews/xstate-fsmPlus-Espruino/blob/main/LICENSE>
 
 The modifications to XState/core and XState/fsm provided here are Copyright (c) 2021 Simon Andrews and are provided for use under MIT License. <https://github.com/SimonGAndrews/XState-fsm-Espruino/blob/main/LICENSE>
