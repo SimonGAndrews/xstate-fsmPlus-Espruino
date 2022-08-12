@@ -1,15 +1,12 @@
 'use strict';
 
-// Object.defineProperty(exports, '__esModule', { value: true }); SGA
-
-// var types = require('./types.js'); SGA
 var InterpreterStatus ;
-//exports.InterpreterStatus = void 0;
+
 (function (InterpreterStatus) {
     InterpreterStatus[InterpreterStatus["NotStarted"] = 0] = "NotStarted";
     InterpreterStatus[InterpreterStatus["Running"] = 1] = "Running";
     InterpreterStatus[InterpreterStatus["Stopped"] = 2] = "Stopped";
-})(InterpreterStatus || (InterpreterStatus = {}));  // SGA removed exports
+})(InterpreterStatus || (InterpreterStatus = {})); 
 
 const INIT_EVENT = { type: 'xstate.init' };
 const ASSIGN_ACTION = 'xstate.assign';
@@ -152,12 +149,12 @@ function createMachine(fsmConfig, implementations = {}) {
 const executeStateActions = (state, event) => state.actions.forEach(({ exec }) => exec && exec(state.context, event));
 function interpret(machine) {
     let state = machine.initialState;
-    let status = InterpreterStatus.NotStarted; // sga removed types
+    let status = InterpreterStatus.NotStarted; 
     const listeners = new Set();
     const service = {
         _machine: machine,
         send: (event) => {
-            if (status !== InterpreterStatus.Running) {   // sga removed types
+            if (status !== InterpreterStatus.Running) {   
                 return;
             }
             state = machine.transition(state, event);
@@ -191,12 +188,12 @@ function interpret(machine) {
             else {
                 state = machine.initialState;
             }
-            status = InterpreterStatus.Running; // sga removed types
+            status = InterpreterStatus.Running; 
             executeStateActions(state, INIT_EVENT);
             return service;
         },
         stop: () => {
-            status = InterpreterStatus.Stopped; // sga removed types
+            status = InterpreterStatus.Stopped; 
             listeners.clear();
             return service;
         },
