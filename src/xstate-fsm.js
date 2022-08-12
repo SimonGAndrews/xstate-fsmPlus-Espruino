@@ -1,8 +1,15 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
+// Object.defineProperty(exports, '__esModule', { value: true }); SGA
 
-var types = require('./types.js');
+// var types = require('./types.js'); SGA
+var InterpreterStatus ;
+//exports.InterpreterStatus = void 0;
+(function (InterpreterStatus) {
+    InterpreterStatus[InterpreterStatus["NotStarted"] = 0] = "NotStarted";
+    InterpreterStatus[InterpreterStatus["Running"] = 1] = "Running";
+    InterpreterStatus[InterpreterStatus["Stopped"] = 2] = "Stopped";
+})(InterpreterStatus || (InterpreterStatus = {}));  // SGA removed exports
 
 const INIT_EVENT = { type: 'xstate.init' };
 const ASSIGN_ACTION = 'xstate.assign';
@@ -145,12 +152,12 @@ function createMachine(fsmConfig, implementations = {}) {
 const executeStateActions = (state, event) => state.actions.forEach(({ exec }) => exec && exec(state.context, event));
 function interpret(machine) {
     let state = machine.initialState;
-    let status = types.InterpreterStatus.NotStarted;
+    let status = InterpreterStatus.NotStarted; // sga removed types
     const listeners = new Set();
     const service = {
         _machine: machine,
         send: (event) => {
-            if (status !== types.InterpreterStatus.Running) {
+            if (status !== InterpreterStatus.Running) {   // sga removed types
                 return;
             }
             state = machine.transition(state, event);
@@ -184,12 +191,12 @@ function interpret(machine) {
             else {
                 state = machine.initialState;
             }
-            status = types.InterpreterStatus.Running;
+            status = InterpreterStatus.Running; // sga removed types
             executeStateActions(state, INIT_EVENT);
             return service;
         },
         stop: () => {
-            status = types.InterpreterStatus.Stopped;
+            status = InterpreterStatus.Stopped; // sga removed types
             listeners.clear();
             return service;
         },
@@ -205,7 +212,7 @@ function interpret(machine) {
 
 Object.defineProperty(exports, 'InterpreterStatus', {
   enumerable: true,
-  get: function () { return types.InterpreterStatus; }
+  get: function () { return InterpreterStatus; }
 });
 exports.assign = assign;
 exports.createMachine = createMachine;
