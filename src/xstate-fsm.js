@@ -105,9 +105,15 @@ function createMachine(fsmConfig, implementations ) {
         },
         transition: (state, event) => {
             var _a, _b;
-            const { value, context } = typeof state === 'string'
-                ? { value: state, context: fsmConfig.context }
-                : state;
+            // const { value, context } = typeof state === 'string'
+            //    ? { value: state, context: fsmConfig.context }
+            //    : state;
+            var _obj = typeof state === 'string' 
+              ? { value: state, context: fsmConfig.context }
+              : state;
+            const value = _obj.value;
+            const context = _obj.context;
+
             const eventObject = toEventObject(event);
             const stateConfig = fsmConfig.states[value];
             if (!IS_PRODUCTION && !stateConfig) {
