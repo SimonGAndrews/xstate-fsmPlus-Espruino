@@ -78,7 +78,9 @@ function handleActions(actions, context, eventObject) {
     });
     return [nonAssignActions, nextContext, assigned];
 }
-function createMachine(fsmConfig, implementations = {}) {
+// function createMachine(fsmConfig, implementations = {}) {
+function createMachine(fsmConfig, implementations ) {
+  implementations = (typeof implementations !== 'undefined') ? implementations : {};
     if (!IS_PRODUCTION) {
         Object.keys(fsmConfig.states).forEach((state) => {
             if (fsmConfig.states[state].states) {
