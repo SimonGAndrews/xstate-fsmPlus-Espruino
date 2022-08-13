@@ -89,7 +89,11 @@ function createMachine(fsmConfig, implementations ) {
             }
         });
     }
-    const [initialActions, initialContext] = handleActions(toArray(fsmConfig.states[fsmConfig.initial].entry).map((action) => toActionObject(action, implementations.actions)), fsmConfig.context, INIT_EVENT);
+    // const [initialActions, initialContext] = handleActions(toArray(fsmConfig.states[fsmConfig.initial].entry).map((action) => toActionObject(action, implementations.actions)), fsmConfig.context, INIT_EVENT);
+    const initialProps = handleActions(toArray(fsmConfig.states[fsmConfig.initial].entry).map((action) => toActionObject(action, implementations.actions)) , fsmConfig.context, INIT_EVENT);
+    const initialActions = initialProps[0];
+    const initialContext = initialProps[1];
+
     const machine = {
         config: fsmConfig,
         _options: implementations,
