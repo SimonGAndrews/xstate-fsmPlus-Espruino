@@ -169,7 +169,14 @@ function createMachine(fsmConfig, implementations ) {
     };
     return machine;
 }
-const executeStateActions = (state, event) => state.actions.forEach(({ exec }) => exec && exec(state.context, event));
+// const executeStateActions = (state, event) => state.actions.forEach(({ exec }) => exec && exec(state.context, event));
+
+const executeStateActions = (state, event) => {
+  state.actions.forEach((action) => {
+      action && Object.assign({},action).exec(state.context, event);   
+  });
+};
+
 function interpret(machine) {
     let state = machine.initialState;
     let status = InterpreterStatus.NotStarted; 
