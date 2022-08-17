@@ -146,7 +146,12 @@ function createMachine(fsmConfig, implementations ) {
                             : []
                                 .concat(stateConfig.exit, actions, nextStateConfig.entry)
                                 .filter((a) => a)).map((action) => toActionObject(action, machine._options.actions));
-                        const [nonAssignActions, nextContext, assigned] = handleActions(allActions, context, eventObject);
+              //        const [nonAssignActions, nextContext, assigned] = handleActions(allActions, context, eventObject);
+                        var _handleActions = handleActions(allActions, context, eventObject).slice(0,3);
+                        var nonAssignActions = _handleActions[0];
+                        var nextContext = _handleActions[1];
+                        var assigned = _handleActions[2];
+
                         const resolvedTarget = target !== null && target !== void 0 ? target : value;
                         return {
                             value: resolvedTarget,
