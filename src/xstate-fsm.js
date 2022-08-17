@@ -125,9 +125,15 @@ function createMachine(fsmConfig, implementations ) {
                     if (transition === undefined) {
                         return createUnchangedState(value, context);
                     }
-                    const { target, actions = [], cond = () => true } = typeof transition === 'string'
-                        ? { target: transition }
-                        : transition;
+              //      const { target, actions = [], cond = () => true } = typeof transition === 'string'
+              //          ? { target: transition }
+              //          : transition;
+
+                    var _transitionObject = typeof transition === 'string' ? { target: transition } : transition;
+                    const target = _transitionObject.target;
+                    const actions = _transitionObject.actions === undefined ?  [] : _transitionObject.actions ;
+                    const cond = _transitionObject.cond === undefined ? () => true : _transitionObject.cond ;
+
                     const isTargetless = target === undefined;
                     const nextStateValue = target !== null && target !== void 0 ? target : value;
                     const nextStateConfig = fsmConfig.states[nextStateValue];
