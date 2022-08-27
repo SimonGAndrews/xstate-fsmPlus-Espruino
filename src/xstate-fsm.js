@@ -78,7 +78,7 @@ function handleActions(actions, context, eventObject) {
     });
     return [nonAssignActions, nextContext, assigned];
 }
-// function createMachine(fsmConfig, implementations = {}) {
+
 function createMachine(fsmConfig, implementations ) {
   implementations = (typeof implementations !== 'undefined') ? implementations : {};
     if (!IS_PRODUCTION) {
@@ -89,7 +89,6 @@ function createMachine(fsmConfig, implementations ) {
             }
         });
     }
-    // const [initialActions, initialContext] = handleActions(toArray(fsmConfig.states[fsmConfig.initial].entry).map((action) => toActionObject(action, implementations.actions)), fsmConfig.context, INIT_EVENT);
     const initialProps = handleActions(toArray(fsmConfig.states[fsmConfig.initial].entry).map((action) => toActionObject(action, implementations.actions)) , fsmConfig.context, INIT_EVENT);
     const initialActions = initialProps[0];
     const initialContext = initialProps[1];
@@ -105,9 +104,6 @@ function createMachine(fsmConfig, implementations ) {
         },
         transition: (state, event) => {
             var _a, _b;
-            // const { value, context } = typeof state === 'string'
-            //    ? { value: state, context: fsmConfig.context }
-            //    : state;
             var _obj = typeof state === 'string' 
               ? { value: state, context: fsmConfig.context }
               : state;
@@ -125,9 +121,6 @@ function createMachine(fsmConfig, implementations ) {
                     if (transition === undefined) {
                         return createUnchangedState(value, context);
                     }
-              //      const { target, actions = [], cond = () => true } = typeof transition === 'string'
-              //          ? { target: transition }
-              //          : transition;
 
                     var _transitionObject = typeof transition === 'string' ? { target: transition } : transition;
                     const target = _transitionObject.target;
@@ -144,10 +137,8 @@ function createMachine(fsmConfig, implementations ) {
                         const allActions = (isTargetless
                             ? toArray(actions)
                             : []
-                             //   .concat(stateConfig.exit, actions, nextStateConfig.entry)
                                 .concat(stateConfig.exit? stateConfig.exit : [], actions? actions:[], nextStateConfig.entry?nextStateConfig.entry:[])
                                 .filter((a) => a)).map((action) => toActionObject(action, machine._options.actions));
-              //        const [nonAssignActions, nextContext, assigned] = handleActions(allActions, context, eventObject);
                         var _handleActions = handleActions(allActions, context, eventObject).slice(0,3);
                         var nonAssignActions = _handleActions[0];
                         var nextContext = _handleActions[1];
@@ -170,7 +161,6 @@ function createMachine(fsmConfig, implementations ) {
     };
     return machine;
 }
-// const executeStateActions = (state, event) => state.actions.forEach(({ exec }) => exec && exec(state.context, event));
 
 const executeStateActions = (state, event) => {
   state.actions.forEach((action) => {
@@ -181,7 +171,7 @@ const executeStateActions = (state, event) => {
 function interpret(machine) {
     let state = machine.initialState;
     let status = InterpreterStatus.NotStarted; 
-    // const listeners = new Set();
+
     var listeners = {};
     const service = {
         _machine: machine,
@@ -191,18 +181,15 @@ function interpret(machine) {
             }
             state = machine.transition(state, event);
             executeStateActions(state, toEventObject(event));
-            // listeners.forEach((listener) => listener(state));
             const keys = Object.keys(listeners);
             for (const key of keys)  {
                 listeners[key](state);
             };
         },
         subscribe: (listener) => {
-            // listeners.add(listener);
             listeners[listener] = listener;
             listener(state);
             return {
-                // unsubscribe: () => listeners.delete(listener)
                 unsubscribe: () => delete listeners(listener)
             };
         },
@@ -232,7 +219,6 @@ function interpret(machine) {
         },
         stop: () => {
             status = InterpreterStatus.Stopped; 
-            // listeners.clear();
             listeners = {};
             return service;
         },

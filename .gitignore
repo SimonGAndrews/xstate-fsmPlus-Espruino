@@ -1,2 +1,5 @@
 # SGA ingore files 
 /src/previous/*
+/test/@xstate/*
+/test/node/*
+/examples/Breakout/*
