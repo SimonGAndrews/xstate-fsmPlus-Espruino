@@ -14,7 +14,7 @@ console.log(toggleMachine);
 const initialState  = toggleMachine.initialState;
 
 const toggledState = toggleMachine.transition(initialState, 'TOGGLE');
-toggledState.value;
+console.log (toggledState.value);
 const untoggledState = toggleMachine.transition(toggledState, 'TOGGLE');
-untoggledState.value;
+console.log (untoggledState.value);
 // => 'inactive'
