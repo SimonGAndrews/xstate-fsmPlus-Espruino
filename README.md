@@ -1,4 +1,4 @@
-# xstate-fsmPlus-Espruino
+# xstate-fsmPlus-Espruino (Dev Branch)
 
 This repro builds on the finite state machine (FSM) package provided by STATELY  (1).
 The FSM is part of the [XSTATE](https://xstate.js.org/) library for working with finite state machines
