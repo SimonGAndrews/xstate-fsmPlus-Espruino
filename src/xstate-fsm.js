@@ -81,6 +81,7 @@ function handleActions(actions, context, eventObject) {
 
 function createMachine(fsmConfig, implementations ) {
   implementations = (typeof implementations !== 'undefined') ? implementations : {};
+  /*  ref issue #13
     if (!IS_PRODUCTION) {
         Object.keys(fsmConfig.states).forEach((state) => {
             if (fsmConfig.states[state].states) {
@@ -89,6 +90,7 @@ function createMachine(fsmConfig, implementations ) {
             }
         });
     }
+  */
     const initialProps = handleActions(toArray(fsmConfig.states[fsmConfig.initial].entry).map((action) => toActionObject(action, implementations.actions)) , fsmConfig.context, INIT_EVENT);
     const initialActions = initialProps[0];
     const initialContext = initialProps[1];
