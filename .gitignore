@@ -3,3 +3,4 @@
 /test/@xstate/*
 /test/node/*
 /examples/Breakout/*
+/reference/*
