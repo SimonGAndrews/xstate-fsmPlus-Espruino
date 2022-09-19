@@ -8,5 +8,8 @@ tests, named in the form xxx.test.js are written using the jest framework and ca
 ```
 in a terminal window open to this directory.
 
-The functions are cut and paste from the src files into these tests,
-so take care to test the current versions in src and manually maintain config control of the tests.
+In some cases the functions are cut and paste from the src files into these tests,
+
+In other cases they are exported directly from the src files.
+
+So take care to test the current versions in src and manually maintain config control of the tests.

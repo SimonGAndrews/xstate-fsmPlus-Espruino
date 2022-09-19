@@ -79,6 +79,114 @@ function handleActions(actions, context, eventObject) {
     return [nonAssignActions, nextContext, assigned];
 }
 
+/* fsmPlus ref issue #12 - returns the state config object from a given full state ID
+ * assumes a valid full state id which exists in the machine
+ * to do - does not validate #machineID
+ */
+ function getStateFromID(id,fsmConfig){
+   if (id == null) return null;
+   let path = 'states.' + id.slice(id.indexOf('.')+1).split('.').join('.states.');
+   return path.split('.').reduce((prev, curr) => prev && prev[curr], fsmConfig);
+ }
+
+ /* fsnPlus ref issue 14 - returns the initial state as full state ID string
+  * path = path to the state as full ID
+  * stateObj = state object on path in which to determine intitial state
+  */
+ function getInitial(path,stateObj){
+  while ('states' in stateObj && 'initial' in stateObj) { 
+    if (!stateObj.states[stateObj.initial]) throw new Error('(getInitial) - initial state ' + stateObj.initial + ' not found in ' + path);   
+    path = path +'.'+ stateObj.initial;
+    stateObj = stateObj.states[stateObj.initial];
+  }
+  return path;
+}
+
+/** fsmPlus ref issue 15 - returns a map of all state nodes in a machine 
+  * in the form of an object with a key set to ID of each state node (custom ID or full def ID).
+  * the keys value is an object with optional properties:
+  *  - pathID: full state ID if state node ID is a custom ID
+  *  - initial: id of the state nodes initial state/substate when node is compound
+  *  - type: M machine, C Compound, A Atomic, 
+  * a recursive function , Called with arg obj set to machine config object, other args are empty on initial call
+  * see functions: validateStateID(), for usage
+  */
+function getStateMap(obj,sofar,stateMap){ // recursive function to generate stateMap from fsmConfig
+  if (!obj) throw new Error('(getStateMap) - called without a configuration object');
+  if (!sofar) { //assume calling at top of config (machine)
+    stateMap = {};
+    if (! ('id' in obj)) {throw new Error ("(getStateMap) - Machine config requires 'id' at top level");}
+    sofar = '#' + obj.id;
+    if (!('initial' in obj) && 'states' in obj ) {throw new Error ("(getStateMap) - Machine " + sofar + " requires 'initial' state at top level");}
+    stateMap[sofar]={type:'M',initial:getInitial(sofar,obj)};
+  }
+
+  if ('states' in obj) { 
+    Object.keys(obj.states).forEach((k) => {
+      let node="";  
+      if ('id' in obj.states[k]) { // add node using Custom ID as key with a pathID property
+        node = '#'+ obj.states[k].id;
+        stateMap[node] = Object.assign({},{pathID: sofar +'.'+ k});
+      } else {                    // add node using full state ID as key no pathID
+        node = sofar +'.'+ k;
+        stateMap[node]= {};
+      }
+      if ('states' in obj.states[k]) { //Compound state node - go down to substates
+        stateMap[node].type = 'C';
+        stateMap[node].initial = getInitial(sofar +'.'+ k,obj.states[k]);
+        getStateMap(obj.states[k],sofar +'.'+ k,stateMap);
+      }else {                         //Atomic state node 
+        stateMap[node].type = 'A';
+        return stateMap
+      }
+    });
+  } 
+  return stateMap;
+}
+
+/** fsmPlus - validates/converts and returns full state ID from a state reference
+  * using lookups into stateMap. expects arg stateRef is in form of a full state id or a custom id 
+  *  - in all cases returns null if resolved state does not exist in stateMap
+  *  - returns stateRef as full ID if exists as key in stateMap
+  *  - returns full ID lookup in stateMap if stateRef is a custom ID 
+  *  - returns stateRef as full ID if stateRef is pathID of a custom ID
+  *  - returns lookup of initial in stateMap when mapInitial is true (used validating target paths)
+  */
+function validateStateID(stateRef,stateMap,mapInitial) {
+  if (!stateRef || !stateMap) return null;
+  if (!(stateMap[stateRef])){ 
+    /* stateRef not a full state ID - maybe a custom id */
+    let id = '';
+    if (id = Object.keys(stateMap).find( k => stateMap[k].pathID === stateRef)){
+      /* return key or initial of a custom id */ 
+      if (mapInitial && stateMap[id].initial) return stateMap[id].initial;
+      return  stateMap[id].pathID;
+    } 
+    else return null ;
+  }
+  else if (mapInitial && stateMap[stateRef].initial) return stateMap[stateRef].initial;
+  return (stateMap[stateRef].pathID) ? stateMap[stateRef].pathID : stateRef;
+ }
+ 
+/** fsmPlus issue #16- returns a full state ID (or null if error)
+  * supporting xstate node referencing techniques,
+  * arg: name - the name found in a config
+  * arg: usedAt- the full state ID context from which name is used (logic assumes always begins with machineID)
+  * returned value is NOT validated as existing in the config -see validateStateID() for this
+  */
+ function makeStateID(name,usedAt) {
+   if(!name || !usedAt) return null;
+   switch(name.substr(0, 1)) {
+    case '#': /* full state or custom ID */
+      return name
+    case '.': /* relative id */
+      return usedAt + name
+    default: /* machine level or sibling state(strip off usedAt last state node) */
+      let arr = usedAt.split('.');
+      return arr.length==1? arr[0] +'.'+ name: arr.slice(0,arr.length-1).join('.') + '.' + name
+  }
+ }
+ 
 function createMachine(fsmConfig, implementations ) {
   implementations = (typeof implementations !== 'undefined') ? implementations : {};
   /*  ref issue #13
@@ -99,11 +207,12 @@ function createMachine(fsmConfig, implementations ) {
         config: fsmConfig,
         _options: implementations,
         initialState: {
-            value: fsmConfig.initial,
+            value: fsmConfig.initial, 
             actions: initialActions,
             context: initialContext,
             matches: createMatcher(fsmConfig.initial)
         },
+
         transition: (state, event) => {
             var _a, _b;
             var _obj = typeof state === 'string' 
@@ -241,3 +350,11 @@ Object.defineProperty(exports, 'InterpreterStatus', {
 exports.assign = assign;
 exports.createMachine = createMachine;
 exports.interpret = interpret;
+
+/* Also export to enable unit testing */
+exports.getInitial = getInitial;
+exports.getStateFromID = getStateFromID;
+exports.getStateFromID = getStateFromID;
+exports.getStateMap = getStateMap;
+exports.makeStateID = makeStateID;
+exports.validateStateID = validateStateID;
