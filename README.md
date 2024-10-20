@@ -1,5 +1,7 @@
 # xstate-fsmPlus-Espruino
 
+This repro is work in progress.  For a working version of xstate-Espruino see https://github.com/SimonGAndrews/xstate-fsm-Espruino.
+
 This repro builds on the finite state machine (FSM) package provided by STATELY  (1).
 The FSM is part of the [XSTATE](https://xstate.js.org/) library for working with finite state machines
 and Statecharts (2) in JavaScript.
