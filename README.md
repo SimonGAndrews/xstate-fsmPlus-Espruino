@@ -1,88 +1,135 @@
 # xstate-fsmPlus-Espruino
 
-This repro is work in progress.  For a working version of xstate-Espruino see https://github.com/SimonGAndrews/xstate-fsm-Espruino.
+⚠️ **Experimental / Legacy Reference Implementation** ⚠️
 
-This repro builds on the finite state machine (FSM) package provided by STATELY  (1).
-The FSM is part of the [XSTATE](https://xstate.js.org/) library for working with finite state machines
-and Statecharts (2) in JavaScript.
-Specifically, this FSM is designed as a minimal 1kb implementation of XState to be run for example on microcontrollers.
-As such the FSM does not provide the full XState Library for the support of Statecharts. 
+This repository contains an **experimental implementation of a hierarchical (“FSMPlus”) finite
+state machine** for use with the Espruino JavaScript interpreter.
 
-This repro provides modifications to enable the FSM to be run as a module within the [Espruino](<https://www.espruino.com/>) JavaScript Interpreter for Microcontrollers (3).  In addition, the repro provides enhancements to enable some basic StateChart features to be supported in the FSM (eg nested states) See also features chart below.
+It builds on the lightweight `@xstate/fsm` semantics (as documented for **XState v4**) and explores
+how a limited set of Statechart concepts (notably **compound / nested states**) can be supported on
+constrained microcontroller platforms.
 
-## This repro is currently Work in Progress
+Active development has since moved to a **private umbrella repository** where the work is being
+consolidated, tested, and extended. This repository is retained as a **public reference** for:
 
-This repro is a merge of two of the authors previous repros: one which tackled the initial Espruino version of the FSM, with a second Repro
-that tackled the StateChart 'Plus' functionality.
-This merged repro is currently evolving using GitHub Issues with linked commits to document the modifications and enhancements. Starting with the changes to the original XState FSM necessary to run in Espruino followed by the 'Plus' enhancements.  
-Testing is continuing and examples are being created and published here within the examples folder.
+- historical design exploration
+- code and issue discussion
+- early FSMPlus experiments
 
-**This software should be considered as experimental.**  
-As such this software should be used for amusement only and specifically not be used for any mission critical or safety/health systems.    As per the license below this work is provided without warranty of any kind.
+For a stable, flat FSM implementation suitable for Espruino today, see:
 
-## Features
+https://github.com/SimonGAndrews/xstate-fsm-Espruino
 
-XState-fsmPlus-Espruino contains all of the features of @XState/fsm with a small set of additional features available within Statechart standards.  Below is an amended copy of the features table from [@XState/fsm](https://github.com/statelyai/xstate/tree/main/packages/xstate-fsm)
+---
 
-|                             | [@XState/fsm](https://github.com/statelyai/xstate/tree/main/packages/xstate-fsm)| **XState-fsmPlus-Espruino**  |[XState](https://github.com/statelyai/XState)   |
-| --------------------------- | :-------------: | :----------------:  |:---------------------------------------------: |
-| Finite states               |       ✅        |        ✅           |                   ✅                          |
-| Initial state               |       ✅        |        ✅           |                   ✅                          |
-| Transitions (object)        |       ✅        |        ✅           |                   ✅                          |
-| Transitions (string target) |       ✅        |        ✅           |                   ✅                          |
-| Delayed transitions         |       ❌        |        ❌           |                   ✅                          |
-| Eventless transitions       |       ❌        |        ❌           |                   ✅                          |
-| Nested states               |       ❌        |        ✅           |                   ✅                          |
-| Parallel states             |       ❌        |        ❌           |                   ✅                          |
-| History states              |       ❌        |        ❌           |                   ✅                          |
-| Final states                |       ❌        |        ❌           |                   ✅                          |
-| Context                     |       ✅        |        ✅           |                   ✅                          |
-| Entry actions               |       ✅        |        ✅           |                   ✅                          |
-| Exit actions                |       ✅        |        ✅           |                   ✅                          |
-| Transition actions          |       ✅        |        ✅           |                   ✅                          |
-| Parameterized actions       |       ❌        |        ❌           |                   ✅                          |
-| Transition guards           |       ✅        |        ✅           |                   ✅                          |
-| Parameterized guards        |       ❌        |        ❌           |                   ✅                          |
-| Spawned actors              |       ❌        |        ❌           |                   ✅                          |
-| Invoked actors              |       ❌        |        ❌           |                   ✅                          |
+## Background
 
-## Goals
+This work builds on the finite state machine (FSM) package provided by **Stately**
+as part of the **XState** project.
 
-The goal of XState-fsmPlus-Espruino is to enable the advantages of a finite state machine approach (including a limited set of Statechart functions) to be demonstrated for the programming of Internet of Things (IOT) microcontrollers.  In a way that:
+The original `@xstate/fsm` package provides a minimal FSM implementation designed for small
+JavaScript runtimes. In **XState v5**, this package is deprecated in favour of the full actor-based
+XState model, but the v4 FSM semantics remain well-defined and useful for constrained environments.
 
-* Supports JavaScript as a mid-level scripting environment for the programming of IOT devices.
-* Enables the existing diverse Esprunio module device library of sensors, actuators and other interface components to be incorporated into IOT devices driven by a FSM.
-* Allows the the thinking and tools of STATELY (eg [Statechart Visual Editor](https://stately.ai/)) to be utilised in Microcontroller Systems.
-* Builds on other resources available within the established open source communities of both XState and Esprunio.
-* Is tested on a sample of low-end, connected, IOT microcontroller devices available today eg Esprunio and Espressif ESP32.  (noting that full XState Statechart Library is already enabled on the Raspberry Pi, running under Linux with Node.js)
+This repository adapts those semantics to run within the
+[Espruino](https://www.espruino.com/) JavaScript interpreter and explores a limited extension
+towards Statechart-style behaviour.
+
+---
+
+## Scope and Status
+
+This repository should be considered:
+
+- **experimental**
+- **incomplete**
+- **not actively developed as a primary target**
+
+It represents a merge of earlier efforts by the author:
+
+- an Espruino-compatible port of `@xstate/fsm`
+- an experimental extension adding limited “FSMPlus” (Statechart-style) features
+
+The implementation and issues here document *how the problem was approached*, rather than a
+finished or supported solution.
+
+---
+
+## Supported Features
+
+XState-fsmPlus-Espruino contains all of the features of `@xstate/fsm`, with a small number of
+additional Statechart-inspired features.
+
+Below is an amended copy of the feature table from `@xstate/fsm`, included for comparison:
+
+|                             | @XState/fsm | XState-fsmPlus-Espruino | XState |
+| --------------------------- | :---------: | :---------------------: | :----: |
+| Finite states               |     ✅      |           ✅            |  ✅    |
+| Initial state               |     ✅      |           ✅            |  ✅    |
+| Transitions (object)        |     ✅      |           ✅            |  ✅    |
+| Transitions (string target) |     ✅      |           ✅            |  ✅    |
+| Nested (compound) states    |     ❌      |           ✅            |  ✅    |
+| Parallel states             |     ❌      |           ❌            |  ✅    |
+| History states              |     ❌      |           ❌            |  ✅    |
+| Final states                |     ❌      |           ❌            |  ✅    |
+| Context                     |     ✅      |           ✅            |  ✅    |
+| Entry / exit actions        |     ✅      |           ✅            |  ✅    |
+| Transition guards           |     ✅      |           ✅            |  ✅    |
+
+**Parallel, history, invoked actors, and delayed transitions are explicitly out of scope.**
+
+---
+
+## Relationship to Current Work
+
+This repository is **not** the canonical implementation of FSMPlus.
+
+Current work is focused on:
+
+- a cleaned and tested **FSMPlus JavaScript engine**
+- a parallel **native C FSM engine** integrated into Espruino
+- SCXML-aligned semantics for compound states
+- shared scenario-based testing (e.g. greenhouse automation)
+
+These efforts are being developed and evaluated in a separate umbrella repository.
+
+This repository remains available as a **public design and code reference** while that work
+progresses.
+
+---
+
+## Experimental Disclaimer
+
+**This software should be considered experimental.**
+
+It is provided for exploration and learning purposes only and **must not** be used in
+mission-critical, safety-related, or health-related systems.
+
+As per the licence, the software is provided *without warranty of any kind*.
+
+---
 
 ## References
 
-(1) STATELY FSM Package: <https://github.com/statelyai/xstate/tree/main/packages/xstate-fsm>
+- Stately FSM package  
+  https://github.com/statelyai/xstate/tree/main/packages/xstate-fsm
 
-(2) XSTATE Docs (Inc. Concepts): <https://xstate.js.org/docs/about/concepts.html>
+- XState documentation  
+  https://xstate.js.org/docs/
 
-(3) Espruino:  <https://www.espruino.com/> and <https://github.com/espruino>
+- Espruino  
+  https://www.espruino.com/  
+  https://github.com/espruino/Espruino
 
-* Statecharts an introduction: <https://statecharts.dev/>
-* Esprunio Working with Modules: <https://www.espruino.com/Modules>
-* Esprunio Index of modules (Devices etc) <http://www.espruino.com/modules/>
+- Statecharts overview  
+  https://statecharts.dev/
+
+---
 
 ## Credits
 
-Both XState and Esprunio are Open Source projects.
+XState is created and maintained by David Khourshid and the XState community.  
+Espruino is created and maintained by Gordon Williams.
 
-Esprunio is the product of Gordon Williams <https://en.wikipedia.org/wiki/Espruino>.  
-To support the Esprunio project please see: <https://www.espruino.com/Donate>
-
-XState is the product of David Khourshid and the XState community.  
-To support the XState project please see: <https://opencollective.com/XState>
-
-## License
-
-XState/core is Copyright (c) 2015 David Khourshid and utilised here under its MIT license <https://github.com/statelyai/XState/blob/main/packages/core/LICENSE>
-
-XState/fsm is Copyright (c) 2015 David Khourshid and utilised here under its MIT license
-<https://github.com/statelyai/xstate/blob/main/packages/xstate-fsm/LICENSE>
-
-The modifications to XState/core and XState/fsm provided here are Copyright (c) 2021 Simon Andrews and are provided for use under MIT License. <https://github.com/SimonGAndrews/xstate-fsmPlus-Espruino/blob/main/LICENSE>
+This repository contains modifications and experimental work by Simon Andrews,
+released under the MIT Licence.
